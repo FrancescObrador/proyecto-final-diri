@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom"
 
 export const About = () => {
   return (
-    <div>About me page</div>
+    <Link to="/">Home</Link>
   )
 }

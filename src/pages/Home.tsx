@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom"
 
 export const Home = () => {
   return (
     <>
+        <Link to="/about">About</Link>
         <div>Home page</div>
         <pre>
         And God said:
@@ -9,6 +11,7 @@ export const Home = () => {
         <code>
             let light = new Light();
         </code>
+
     </>
   )
 }
