@@ -4,11 +4,15 @@ import './index.css'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
 import store from './store/store.ts'
+import { HashRouter } from 'react-router-dom'
 
 const Root = () => {
   return (
     <Provider store={store}>
-      <App/>
+      <HashRouter>
+
+      <App/>  
+      </HashRouter>
     </Provider>
   )
 }
