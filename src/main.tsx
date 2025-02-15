@@ -5,16 +5,10 @@ import App from './App.tsx'
 import { Provider } from 'react-redux'
 import store from './store/store.ts'
 
-const Root = () => {
-  return (
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <Provider store={store}>
       <App/>  
     </Provider>
-  )
-}
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Root />
   </StrictMode>,
 )

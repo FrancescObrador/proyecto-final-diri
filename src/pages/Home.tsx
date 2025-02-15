@@ -27,10 +27,10 @@ export const Home = () => {
     
     return (
         <>
-            <Link className="link link-primary" to="/about">About</Link>
+            <Link to="/about">About</Link>
 
             {isLoading ? (
-                <span className="loading loading-spinner loading-lg text-error"></span>
+                <span>Loading...</span>
             ) : (
                 <ElementList 
                     items={movies}
