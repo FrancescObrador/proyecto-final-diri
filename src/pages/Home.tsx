@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import { ElementList } from "../components/ElementList"
 import { MovieEntry } from "../components/MovieEntry"
 import { useEffect, useState } from "react"
@@ -27,10 +26,8 @@ export const Home = () => {
     
     return (
         <>
-            <Link to="/about">About</Link>
-
             {isLoading ? (
-                <span>Loading...</span>
+                <span className="loading loading-lg"></span>
             ) : (
                 <ElementList 
                     items={movies}

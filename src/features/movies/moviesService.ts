@@ -25,7 +25,7 @@ export class MoviesService {
     }
 
     async getPopularMovies(page: number = 1): Promise<MovieList> {
-        //await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay
         
         let mv: MovieList = {
             page: 1,
