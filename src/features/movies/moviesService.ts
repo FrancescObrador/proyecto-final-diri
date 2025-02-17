@@ -1,4 +1,4 @@
-import { Movie, MovieDetail } from '../../entities/Movie';
+import { MovieDetail } from '../../entities/Movie';
 import { MovieList } from '../../entities/MovieList';
 import { MOVIE } from './MOVIE';
 
@@ -24,18 +24,21 @@ export class MoviesService {
     }
 
     async getPopularMovies(page: number = 1): Promise<MovieList> {
-       await new Promise(resolve => setTimeout(resolve, 2000)); // 5 second delay
-        
-        let mv: MovieList = {
-            page: 1,
-            total_pages: 10,
-            total_results: 10,
-            results: MOVIE
-        };
-        
-        //return mv;
         return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
+
+    async getFakeMovies(): Promise<MovieList> {
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 5 second delay
+         
+         let mv: MovieList = {
+             page: 1,
+             total_pages: 10,
+             total_results: 10,
+             results: MOVIE
+         };
+         
+         return mv;
+     }
 
     async getMovieDetails(movieId: number): Promise<MovieDetail> {
         return await this.fetchFromAPI(`/movie/${movieId}`);

@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { ThemeController } from './ThemeController'
 
 export const Navbar = () => {

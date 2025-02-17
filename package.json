@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx tailwindcss -i ./src/App.css -o ./src/output.css && vite",
-    "build": "tsc -b && vite build",
+    "tw": "npx tailwindcss -i ./src/App.css -o ./src/output.css",
+    "dev": "npm run tw && vite",
+    "build": "npm run tw && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
