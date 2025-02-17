@@ -33,8 +33,8 @@ export class MoviesService {
             results: MOVIE
         };
         
-        return mv;
-        //return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
+        //return mv;
+        return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
 
     async getMovieDetails(movieId: number): Promise<MovieDetail> {
