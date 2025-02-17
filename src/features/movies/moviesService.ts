@@ -20,12 +20,11 @@ export class MoviesService {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        console.log(options.headers.Authorization)
         return await response.json();
     }
 
     async getPopularMovies(page: number = 1): Promise<MovieList> {
-        await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay
+       await new Promise(resolve => setTimeout(resolve, 2000)); // 5 second delay
         
         let mv: MovieList = {
             page: 1,
@@ -34,8 +33,8 @@ export class MoviesService {
             results: MOVIE
         };
         
-        //return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
         return mv;
+        //return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
 
     async getMovieDetails(movieId: number): Promise<MovieDetail> {

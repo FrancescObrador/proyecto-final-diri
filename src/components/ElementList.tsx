@@ -7,18 +7,14 @@ interface ElementListProps<T> {
 }
 
 export const ElementList = <T,>({ items, renderItem, className }: ElementListProps<T>) => {
-    // if (!items.length) {
-    //     return <div className={className}>No items to display</div>;
-    // }
-
     return (
-        <div className={className}>
+        
+        <div className={`flex flex-col items-center w-full max-w-4xl mx-auto ${className || ''}`}>
             {items.map((item, index) => (
-                <div key={index}>
+                <div key={index} className="w-full">
                     {renderItem(item)}
                 </div>
             ))}
         </div>
     );
 };
-

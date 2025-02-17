@@ -1,5 +1,5 @@
 import { ElementList } from "../components/ElementList"
-import { MovieEntry } from "../components/MovieEntry"
+import { MovieItem } from "../components/MovieItem"
 import { useEffect, useState } from "react"
 import { Movie } from "../entities/Movie"
 import { moviesService } from "../features/movies/moviesService"
@@ -23,15 +23,17 @@ export const Home = () => {
 
         fetchMovies()
     }, [])
-    
+
     return (
         <>
             {isLoading ? (
-                <span className="loading loading-lg"></span>
+                <div className="flex justify-center items-center min-h-screen">
+                    <div className="loading loading-lg text-primary" />
+                </div>
             ) : (
-                <ElementList 
+                <ElementList
                     items={movies}
-                    renderItem={(movie) => <MovieEntry movie={movie} />}
+                    renderItem={(movie) => <MovieItem movie={movie} />}
                 />
             )}
         </>
