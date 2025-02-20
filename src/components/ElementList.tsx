@@ -3,18 +3,17 @@ import React from 'react';
 interface ElementListProps<T> {
     items: T[];
     renderItem: (item: T) => React.ReactNode;
-    className?: string;
 }
 
-export const ElementList = <T,>({ items, renderItem, className }: ElementListProps<T>) => {
+export const ElementList = <T,>({ items, renderItem }: ElementListProps<T>) => {
     return (
         
-        <div className={`flex flex-col items-center w-full max-w-4xl mx-auto ${className || ''}`}>
+        <ul className="list bg-base-100 rounded-box shadow-md">
             {items.map((item, index) => (
-                <div key={index} className="w-full">
+                <li key={index} className='list-row'>
                     {renderItem(item)}
-                </div>
+                </li>
             ))}
-        </div>
+        </ul>
     );
 };
