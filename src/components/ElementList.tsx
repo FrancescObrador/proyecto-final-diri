@@ -8,7 +8,7 @@ interface ElementListProps<T> {
 export const ElementList = <T,>({ items, renderItem }: ElementListProps<T>) => {
     return (
         
-        <ul className="list bg-base-100 rounded-box shadow-md">
+        <ul className="list bg-base-100 rounded-box shadow-xl m-4">
             {items.map((item, index) => (
                 <li key={index} className='list-row'>
                     {renderItem(item)}

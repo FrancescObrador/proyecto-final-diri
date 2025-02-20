@@ -28,7 +28,7 @@ export class MoviesService {
     }
 
     async getFakeMovies(): Promise<MovieList> {
-        await new Promise(resolve => setTimeout(resolve, 2000)); // 5 second delay
+        //await new Promise(resolve => setTimeout(resolve, 2000)); 
          
          let mv: MovieList = {
              page: 1,

@@ -12,7 +12,7 @@ export const Home = () => {
         const fetchMovies = async () => {
             try {
                 setIsLoading(true)
-                const response = await moviesService.getFakeMovies()
+                const response = await moviesService.getPopularMovies()
                 setMovies(response.results)
             } catch (error) {
                 console.error('Error fetching movies:', error)
