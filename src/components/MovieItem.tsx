@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Movie } from '../entities/Movie';
 
-interface MovieEntryProps {
+interface MovieItemProps {
     movie: Movie;
 }
 
-export const MovieItem: React.FC<MovieEntryProps> = ({ movie }) => {
+export const MovieItem = ({ movie }: MovieItemProps) => {
     const [seen, setSeen] = useState(false)
     const [platform, setPlatform] = useState("Otros")
+    const [imageLoaded, setImageLoaded] = useState(false)
 
     return (
         <>
             {/* column 1 */}
             <div>
-                {/* <img className={`w-30 rounded-xl ${seen ? 'brightness-50' : ''}`} src={`${movie.poster_path}`} /> */}
-                <img className={`w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''}`} src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} />
+                {!imageLoaded && <div className='skeleton w-30 h-45'></div>}
+                <img 
+                    className={`w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`} 
+                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                    onLoad={() => setImageLoaded(true)}
+                />
             </div>
 
             {/* Column 2 */}

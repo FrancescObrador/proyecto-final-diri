@@ -24,6 +24,7 @@ export class MoviesService {
     }
 
     async getPopularMovies(page: number = 1): Promise<MovieList> {
+        await new Promise(resolve => setTimeout(resolve, 2000)); 
         return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
 

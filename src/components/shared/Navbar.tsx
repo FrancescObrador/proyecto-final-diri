@@ -1,10 +1,8 @@
-
-import { LanguageSelector } from './LanguageSelector'
 import { ThemeController } from './ThemeController'
 
 export const Navbar = () => {
   return (
-    <div className="fixed navbar bg-base-100 z-50">
+    <div className="fixed navbar bg-base-200 text-base-content z-50">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">PeliPlan</a>
       </div>
@@ -13,7 +11,6 @@ export const Navbar = () => {
           <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
         </div>
         <ThemeController />
-       
       </div>
     </div>
   )

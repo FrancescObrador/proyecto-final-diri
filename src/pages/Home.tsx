@@ -1,41 +1,20 @@
-import { ElementList } from "../components/ElementList"
-import { MovieItem } from "../components/MovieItem"
-import { useEffect, useState } from "react"
-import { Movie } from "../entities/Movie"
-import { moviesService } from "../features/movies/moviesService"
+import { lazy, Suspense } from "react"
+
+const LazyMoviesList = lazy(() => import('../components/MoviesList'));
 
 export const Home = () => {
-    const [movies, setMovies] = useState<Movie[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                setIsLoading(true)
-                const response = await moviesService.getPopularMovies()
-                setMovies(response.results)
-            } catch (error) {
-                console.error('Error fetching movies:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        fetchMovies()
-    }, [])
 
     return (
         <>
-            {isLoading ? (
-                <div className="flex justify-center items-center min-h-screen">
-                    <div className="loading loading-lg text-primary" />
+        <Suspense fallback={
+            <div className="flex justify-center items-center min-h-screen">
+                    <p>
+                        Loading list component...
+                    </p>
                 </div>
-            ) : (
-                <ElementList
-                    items={movies}
-                    renderItem={(movie) => <MovieItem movie={movie} />}
-                />
-            )}
+        }>
+            <LazyMoviesList />
+        </Suspense>
         </>
     )
 }
