@@ -10,7 +10,7 @@ function App() {
     <>
       <BrowserRouter basename='/proyecto-final-diri/'>
       <Navbar/>
-          <div className='container mx-auto pt-16'>
+            <div className='container mx-auto pt-16 md:px-16 lg:px-32'>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/home' element={<Home />} />
