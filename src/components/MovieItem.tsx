@@ -14,7 +14,7 @@ export const MovieItem: React.FC<MovieEntryProps> = ({ movie }) => {
             {/* column 1 */}
             <div>
                 {/* <img className={`w-30 rounded-xl ${seen ? 'brightness-50' : ''}`} src={`${movie.poster_path}`} /> */}
-                <img className={`w-30 rounded-xl ${seen ? 'brightness-50' : ''}`} src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} />
+                <img className={`w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''}`} src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} />
             </div>
 
             {/* Column 2 */}
