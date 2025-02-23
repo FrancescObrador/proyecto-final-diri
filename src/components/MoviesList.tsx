@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Movie } from '../entities/Movie';
 import { moviesService } from '../features/movies/moviesService';
 import { MovieItem } from './MovieItem';
+import CenteredLoader from './shared/CenteredLoader';
 
 const MoviesList = () => {
     const [movies, setMovies] = useState<Movie[]>([])
@@ -26,10 +27,7 @@ const MoviesList = () => {
     return (
         <>
             {isLoading ? (
-                <div className="flex flex-col justify-center items-center min-h-screen space-y-2">
-                    <div className="loading loading-lg text-primary" />
-                    <h1>Loading movies...</h1>
-                </div>
+               <CenteredLoader messages={['Writing the scripts', 'Filming the movies', 'aaaaaaaaaaaaaaa']}></CenteredLoader>
             ) : (
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
                     {movies.map((movie, index) => (

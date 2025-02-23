@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react"
 
 const LazyMoviesList = lazy(() => import('../components/MoviesList'));
 
-export const Home = () => {
+const Home = () => {
 
     return (
         <>
@@ -18,3 +18,5 @@ export const Home = () => {
         </>
     )
 }
+
+export default Home;
