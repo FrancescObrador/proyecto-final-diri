@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Movie } from '../entities/Movie';
+import { Media } from '../entities/Media';
 
 interface MovieItemProps {
-    movie: Movie;
+    movie: Media;
 }
 
 export const MovieItem = ({ movie }: MovieItemProps) => {
@@ -27,7 +27,7 @@ export const MovieItem = ({ movie }: MovieItemProps) => {
                 <div className="flex flex-row items-center space-x-2">
                     <h1 className='text text-xs md:text-xl font-semibold'>{movie.title}</h1>
                     {seen && (
-                        <span className='hidden md:visible badge badge-accent badge-xxs md:badge-sm'>
+                        <span className='invisible md:visible badge badge-accent badge-xxs md:badge-sm'>
                             {new Date().toLocaleDateString('es-ES', {
                                 day: '2-digit',
                                 month: '2-digit',

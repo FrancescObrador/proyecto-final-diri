@@ -5,7 +5,7 @@ interface CenteredLoaderProps {
     intervalTime?: number // tiempo en milisegundos
 }
 
-const CenteredLoader = ({ messages, intervalTime = 3000 }: CenteredLoaderProps) => {
+const CenteredLoader = ({ messages, intervalTime = 2000 }: CenteredLoaderProps) => {
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
     useEffect(() => {

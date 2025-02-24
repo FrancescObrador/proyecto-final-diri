@@ -1,20 +1,11 @@
 import { lazy, Suspense } from "react"
-
-const LazyMoviesList = lazy(() => import('../components/MoviesList'));
+import MoviesList from "../components/MoviesList";
 
 const Home = () => {
 
     return (
         <>
-        <Suspense fallback={
-            <div className="flex justify-center items-center min-h-screen">
-                    <p>
-                        Loading list component...
-                    </p>
-                </div>
-        }>
-            <LazyMoviesList />
-        </Suspense>
+            <MoviesList />
         </>
     )
 }

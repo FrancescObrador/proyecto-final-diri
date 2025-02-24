@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter basename='/proyecto-final-diri/'>
         <Navbar />
         <div className='container mx-auto pt-16 md:px-16 lg:px-32'>
-          <Suspense fallback={<CenteredLoader messages={['aaaaaaaaaaa', 'bbbbbbbbbbbbbb']}/>}>
+          <Suspense fallback={<CenteredLoader messages={['Surfing the internet...', 'Loading the pages...']} />}>
             <Routes>
               <Route path='/' element={<LazyHome />} />
               <Route path='/home' element={<LazyHome />} />

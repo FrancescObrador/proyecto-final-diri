@@ -1,3 +1,5 @@
+import { LanguageSelector } from './LanguageSelector'
+import SearchBar, { SearchResult } from './SearchBar'
 import { ThemeController } from './ThemeController'
 
 export const Navbar = () => {
@@ -9,13 +11,12 @@ export const Navbar = () => {
       </div>
 
       <div className="navbar-center">
-        <div className="form-control">
-          <input type="text" placeholder="Search" className="input input-bordered w-auto md:w-128" />
-        </div>
+       <SearchBar />
       </div>
 
       <div className="navbar-end">
         <ThemeController />
+        <LanguageSelector />
       </div>
 
     </div>

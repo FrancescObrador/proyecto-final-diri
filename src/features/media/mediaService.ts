@@ -1,10 +1,11 @@
-import { MovieDetail } from '../../entities/Movie';
-import { MovieList } from '../../entities/MovieList';
+import { Media } from '../../entities/Media';
+import { MovieList as MediaList } from '../../entities/MediaList';
+import { Providers } from '../../entities/Providers';
 import { MOVIE } from './MOVIE';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-export class MoviesService {
+export class MediaService {
     
 
     private async fetchFromAPI(endpoint: string): Promise<any> {
@@ -23,15 +24,15 @@ export class MoviesService {
         return await response.json();
     }
 
-    async getPopularMovies(page: number = 1): Promise<MovieList> {
+    async getPopularMedia(page: number = 1): Promise<MediaList> {
         await new Promise(resolve => setTimeout(resolve, 2000)); 
         return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
 
-    async getFakeMovies(): Promise<MovieList> {
+    async getFakeMovies(): Promise<MediaList> {
         //await new Promise(resolve => setTimeout(resolve, 2000)); 
          
-         let mv: MovieList = {
+         let mv: MediaList = {
              page: 1,
              total_pages: 10,
              total_results: 10,
@@ -41,25 +42,36 @@ export class MoviesService {
          return mv;
      }
 
-    async getMovieDetails(movieId: number): Promise<MovieDetail> {
+    async getMovieDetails(movieId: number): Promise<Media> {
         return await this.fetchFromAPI(`/movie/${movieId}`);
     }
 
-    async searchMovies(query: string, page: number = 1): Promise<MovieList> {
-        return await this.fetchFromAPI(`/search/movie&query=${encodeURIComponent(query)}&page=${page}`);
+    async getTVDetails(movieId: number): Promise<Media> {
+        return await this.fetchFromAPI(`/tv/${movieId}`);
     }
 
-    async getTopRatedMovies(page: number = 1): Promise<MovieList> {
+    async getMediaPlatforms(movieId: number): Promise<Providers> {
+        return await this.fetchFromAPI(`/movie/${movieId}/watch/providers`);
+    }
+
+    async searchMedia(query: string, page: number = 1): Promise<MediaList> {
+        let a = await this.fetchFromAPI(`/search/multi?query=${encodeURIComponent(query)}&language=es-ES&page=${page}`);
+       // console.log({media: a});
+        return a;
+
+    }
+
+    async getTopRatedMeia(page: number = 1): Promise<MediaList> {
         return await this.fetchFromAPI(`/movie/top_rated&page=${page}`);
     }
 
-    async getUpcomingMovies(page: number = 1): Promise<MovieList> {
+    async getUpcomingMedia(page: number = 1): Promise<MediaList> {
         return await this.fetchFromAPI(`/movie/upcoming&page=${page}`);
     }
 
-    async getNowPlayingMovies(page: number = 1): Promise<MovieList> {
+    async getNowPlayingMedia(page: number = 1): Promise<MediaList> {
         return await this.fetchFromAPI(`/movie/now_playing&page=${page}`);
     }
 }
 
-export const moviesService = new MoviesService();
+export const mediaService = new MediaService();

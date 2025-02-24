@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import moviesSlice from '../features/movies/moviesSlice';
+import mediaSlice from '../features/media/mediaSlice';
 
 const store = configureStore({
     reducer: {
-        movies: moviesSlice,
+        media: mediaSlice,
     },
     //middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
 });

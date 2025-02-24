@@ -1,38 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Movie } from '../entities/Movie';
-import { moviesService } from '../features/movies/moviesService';
+import { Media } from '../entities/Media';
 import { MovieItem } from './MovieItem';
 import CenteredLoader from './shared/CenteredLoader';
+import { useSelector } from 'react-redux';
+import { MediaState } from '../features/media/mediaSlice';
 
 const MoviesList = () => {
-    const [movies, setMovies] = useState<Movie[]>([])
+    const [media, setMedia] = useState<Media[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                setIsLoading(true)
-                const response = await moviesService.getPopularMovies()
-                setMovies(response.results)
-            } catch (error) {
-                console.error('Error fetching movies:', error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
+    const _media  = useSelector((state: MediaState) => state.media);
 
-        fetchMovies()
-    }, [])
+    useEffect(() => {
+        console.log(_media)
+        if (_media.length>1) {
+            setMedia(_media)
+            setIsLoading(false)
+        }
+    }, [media]);
 
     return (
         <>
             {isLoading ? (
-               <CenteredLoader messages={['Writing the scripts', 'Filming the movies', 'aaaaaaaaaaaaaaa']}></CenteredLoader>
+               <CenteredLoader messages={['Writing the scripts...', 'Filming the movies...']}></CenteredLoader>
             ) : (
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
-                    {movies.map((movie, index) => (
+                    {media.map((media, index) => (
                         <li key={index} className='list-row'>
-                            <MovieItem movie={movie}></MovieItem>
+                            <MovieItem movie={media}></MovieItem>
                         </li>
                     ))}
                 </ul>
