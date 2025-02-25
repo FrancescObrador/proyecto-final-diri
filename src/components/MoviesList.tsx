@@ -7,19 +7,25 @@ import { useSelector } from 'react-redux';
 const MoviesList = () => {
     const [media, setMedia] = useState<Media[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    const mediaFromRedux = useSelector((state: any) => state.media.media);
+
+    const updatedList = useSelector((state: any) => state.media.media);
 
     useEffect(() => {
-        if (mediaFromRedux) {
-            setMedia(mediaFromRedux)
+        if (updatedList) {
+            console.log(updatedList)
+            setMedia(updatedList)
             setIsLoading(false)
         }
-    }, [mediaFromRedux]);
+    }, [updatedList]);
 
     return (
         <>
             {isLoading ? (
-               <CenteredLoader messages={['Writing the scripts...', 'Filming the movies...']}></CenteredLoader>
+                <CenteredLoader messages={['Writing the scripts...', 'Filming the movies...']}></CenteredLoader>
+            ) : media.length === 0 ? (
+                <div className="text-center p-4">
+                    <p className="text-xl">No movies have been added yet!</p>
+                </div>
             ) : (
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
                     {media.map((media, index) => (

@@ -38,8 +38,8 @@ const SearchBar = () => {
 
     const handleResult = async (id: number, mediaType: string) => {
 
-        let media: Media = (mediaType == 'movie') ? await mediaService.getMovieDetails(id)
-            : await mediaService.getTVDetails(id);
+        let media: Media = (mediaType === 'tv') ? await mediaService.getTVDetails(id)
+            : await mediaService.getMovieDetails(id);
 
         dispatch(addMedia(media))
 
@@ -72,10 +72,10 @@ const SearchBar = () => {
                         >
                             <img src={`https://image.tmdb.org/t/p/w200${result.poster_path}`} className='w-10 h-15' />
                             <p>
-                                {result.media_type === 'movie' ? (
-                                    `${result.title} - ${result.release_date ? new Date(result.release_date).toLocaleDateString('es-ES', { year: 'numeric' }) : ''}`
+                                {result.media_type === 'tv' ? (
+                                    `${result.name} - ${new Date(result.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })}`
                                 ) : (
-                                    `${result.name} - ${result.first_air_date ? new Date(result.first_air_date).toLocaleDateString('es-ES', { year: 'numeric' }) : ''}`
+                                    `${result.title} - ${new Date(result.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })}`
                                 )}
                             </p>
                         </li>

@@ -26,7 +26,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
             <div>
                 <div className="flex flex-row items-center space-x-2">
                     <h1 className='text text-xs md:text-xl font-semibold'>
-                        {media.media_type === 'movie' ? media.title : media.name}
+                        {media.media_type === 'tv' ? media.name : media.title}
                     </h1>
                     {seen && (
                         <span className='invisible md:visible badge badge-accent badge-xxs md:badge-sm'>
@@ -39,10 +39,13 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     )}
                 </div>
                 <div className="text uppercase font-semibold opacity-60">
-                    {media.media_type === 'movie' 
-                        ? new Date(media.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })
-                        : new Date(media.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })
-                    }
+                    <div className="flex gap-2">
+                        {
+                        media.media_type === 'tv'
+                            ? new Date(media.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })
+                            : new Date(media.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })
+                        }
+                    </div>
                 </div>
                 <div className="text uppercase font-semibold opacity-60">{media.vote_average} ⭐</div>
             </div>

@@ -43,11 +43,15 @@ export class MediaService {
      }
 
     async getMovieDetails(movieId: number): Promise<Media> {
-        return await this.fetchFromAPI(`/movie/${movieId}`);
+        let media = await this.fetchFromAPI(`/movie/${movieId}?language=es-ES`);
+        media = {...media, media_type: 'movie'}
+        return media;
     }
 
     async getTVDetails(movieId: number): Promise<Media> {
-        return await this.fetchFromAPI(`/tv/${movieId}`);
+        let media = await this.fetchFromAPI(`/tv/${movieId}?language=es-ES`);
+        media = {...media, media_type: 'tv'}
+        return media;
     }
 
     async getMediaPlatforms(movieId: number): Promise<Providers> {
@@ -55,10 +59,7 @@ export class MediaService {
     }
 
     async searchMedia(query: string, page: number = 1): Promise<MediaList> {
-        let a = await this.fetchFromAPI(`/search/multi?query=${encodeURIComponent(query)}&language=es-ES&page=${page}`);
-       // console.log({media: a});
-        return a;
-
+        return await this.fetchFromAPI(`/search/multi?query=${encodeURIComponent(query)}&language=es-ES&page=${page}`);
     }
 
     async getTopRatedMeia(page: number = 1): Promise<MediaList> {
