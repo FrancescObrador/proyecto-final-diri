@@ -15,8 +15,8 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
             {/* column 1 */}
             <div>
                 {!imageLoaded && <div className='skeleton w-30 h-45'></div>}
-                <img 
-                    className={`w-12 md:w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`} 
+                <img
+                    className={`w-12 md:w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
                     src={`https://image.tmdb.org/t/p/w200${media.poster_path}`}
                     onLoad={() => setImageLoaded(true)}
                 />
@@ -24,7 +24,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
 
             {/* Column 2 */}
             <div>
-                <div className="flex flex-row items-center space-x-2">
+                <div className="flex flex-row items-center space-x-2 space-y-1">
                     <h1 className='text text-xs md:text-xl font-semibold'>
                         {media.media_type === 'tv' ? media.name : media.title}
                     </h1>
@@ -41,13 +41,18 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                 <div className="text uppercase font-semibold opacity-60">
                     <div className="flex gap-2">
                         {
-                        media.media_type === 'tv'
-                            ? new Date(media.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })
-                            : new Date(media.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })
+                            media.media_type === 'tv'
+                                ? new Date(media.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })
+                                : new Date(media.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })
                         }
                     </div>
                 </div>
                 <div className="text uppercase font-semibold opacity-60">{media.vote_average} ⭐</div>
+                <div className='space-x-1'>
+                    {media.genres!.map((genre, index) => (
+                        <div key={index} className='badge badge-sm badge-outline badge-secondary'>{genre.name}</div>
+                    ))}
+                </div>
             </div>
 
             {/* column 3 */}
