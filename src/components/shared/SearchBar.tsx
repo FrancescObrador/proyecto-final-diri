@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { mediaService } from '../../features/media/mediaService';
-import { MovieList } from '../../entities/MediaList';
-import { Media } from '../../entities/Media';
+import { MovieList } from '../../interfaces/MediaList';
+import { Media } from '../../interfaces/Media';
 import { useDispatch } from 'react-redux';
 import { addMedia } from '../../features/media/mediaSlice';
 

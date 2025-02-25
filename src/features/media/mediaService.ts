@@ -1,6 +1,6 @@
-import { Media } from '../../entities/Media';
-import { MovieList as MediaList } from '../../entities/MediaList';
-import { Providers } from '../../entities/Providers';
+import { Media } from '../../interfaces/Media';
+import { MovieList as MediaList } from '../../interfaces/MediaList';
+import { Providers } from '../../interfaces/Providers';
 import { MOVIE } from './MOVIE';
 
 const BASE_URL = 'https://api.themoviedb.org/3';

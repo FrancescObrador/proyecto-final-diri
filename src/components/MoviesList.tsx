@@ -1,23 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Media } from '../entities/Media';
+import { Media } from '../interfaces/Media';
 import { MovieItem } from './MovieItem';
 import CenteredLoader from './shared/CenteredLoader';
 import { useSelector } from 'react-redux';
-import { MediaState } from '../features/media/mediaSlice';
 
 const MoviesList = () => {
     const [media, setMedia] = useState<Media[]>([])
     const [isLoading, setIsLoading] = useState(true)
-
-    const _media  = useSelector((state: MediaState) => state.media);
+    const mediaFromRedux = useSelector((state: any) => state.media.media);
 
     useEffect(() => {
-        console.log(_media)
-        if (_media.length>1) {
-            setMedia(_media)
+        if (mediaFromRedux) {
+            setMedia(mediaFromRedux)
             setIsLoading(false)
         }
-    }, [media]);
+    }, [mediaFromRedux]);
 
     return (
         <>
@@ -27,7 +24,7 @@ const MoviesList = () => {
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
                     {media.map((media, index) => (
                         <li key={index} className='list-row'>
-                            <MovieItem movie={media}></MovieItem>
+                            <MovieItem media={media}></MovieItem>
                         </li>
                     ))}
                 </ul>

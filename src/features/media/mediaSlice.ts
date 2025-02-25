@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Media } from '../../entities/Media';
+import { Media } from '../../interfaces/Media';
 
 export interface MediaState {
     media: Media[];
@@ -37,7 +37,8 @@ const mediaSlice = createSlice({
             state.error = action.payload;
         },
         addMedia: (state, action: PayloadAction<Media>) => {
-            state.media = [...state.media, action.payload];
+            console.log(action.payload)
+            state.media.push(action.payload);
         },
         removeMedia: (state, action: PayloadAction<number>) => {
             state.media = state.media.filter(media => media.id !== action.payload);
