@@ -13,7 +13,7 @@ export interface SearchResult {
 const SearchBar = () => {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Media[]>([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [, setIsLoading] = useState(false)
 
     const dispatch = useDispatch();
 
