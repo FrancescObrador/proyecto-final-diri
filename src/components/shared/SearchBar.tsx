@@ -65,7 +65,7 @@ const SearchBar = () => {
             {results.length > 0 && (
                 <ul className="absolute top-full mt-1 w-full bg-base-100 border rounded-lg shadow-lg max-h-60 overflow-y-auto">
                     {results.map((result) => (
-                        <li
+                        ((result.title || result.name) && result.release_date || result.first_air_date ) && (<li
                             key={result.id}
                             onMouseDown={() => handleResult(result.id, result.media_type!)}
                             className="flex flex-row items-center p-2 space-x-2 hover:bg-base-200 cursor-pointer"
@@ -78,7 +78,7 @@ const SearchBar = () => {
                                     `${result.title} - ${new Date(result.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })}`
                                 )}
                             </p>
-                        </li>
+                        </li>)
                     ))}
                 </ul>
             )}

@@ -16,7 +16,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
             <div>
                 {!imageLoaded && <div className='skeleton w-30 h-45'></div>}
                 <img
-                    className={`w-12 md:w-30 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
+                    className={`w-12 md:w-25 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
                     src={`https://image.tmdb.org/t/p/w200${media.poster_path}`}
                     onLoad={() => setImageLoaded(true)}
                 />
@@ -47,7 +47,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                         }
                     </div>
                 </div>
-                <div className="text uppercase font-semibold opacity-60">{media.vote_average} ⭐</div>
+                <div className="text uppercase font-semibold opacity-60">{media.vote_average.toFixed(1)} ⭐</div>
                 <div className='space-x-1'>
                     {media.genres!.map((genre, index) => (
                         <div key={index} className='badge badge-sm badge-outline badge-secondary'>{genre.name}</div>
