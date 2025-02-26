@@ -8,7 +8,7 @@ export const Navbar = () => {
 
       <div className="navbar-start">
 
-        <a className="btn btn-ghost text-xl"><img className='size-8' src='images/Designer-cropped.svg'></img> MovyFlick</a>
+        <a className="btn btn-ghost text-xl"><img className='size-8' src='images/logo.svg'></img> MovyFlick</a>
       </div>
 
       <div className="navbar-center">
