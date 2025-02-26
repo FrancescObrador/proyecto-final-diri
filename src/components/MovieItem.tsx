@@ -16,7 +16,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
             <div>
                 {!imageLoaded && <div className='skeleton w-30 h-45'></div>}
                 <img
-                    className={`w-12 md:w-25 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
+                    className={`w-12 md:w-22 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
                     src={`https://image.tmdb.org/t/p/w200${media.poster_path}`}
                     onLoad={() => setImageLoaded(true)}
                 />
@@ -81,6 +81,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     <option value="Other">Otra</option>
                 </select>
             </div>
+
 
         </>
     );
