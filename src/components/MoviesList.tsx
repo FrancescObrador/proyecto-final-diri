@@ -27,8 +27,8 @@ const MoviesList = () => {
                 </div>
             ) : (
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
-                    {media.map((media, index) => (
-                        <li key={index} className='list-row'>
+                    {media.map((media) => (
+                        <li key={media.id} className='list-row'>
                             <MovieItem media={media}></MovieItem>
                         </li>
                     ))}

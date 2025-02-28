@@ -70,7 +70,6 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     className={`select cursor-pointe md:select-md ${seen ? 'flex' : 'hidden'}`}
                     value={platform}
                     onChange={(e) => setPlatform(e.target.value)}
-                    // style={{ visibility: seen ? 'visible' : 'hidden' }}
                 >
                     <option disabled value="">Plataforma</option>
                     <option value="Netflix">Netflix</option>

@@ -13,12 +13,12 @@ export interface Media {
     // Propiedades exclusivas de TV
     original_name?: string;        // TV
     name?: string;                 // TV
-    first_air_date?: string;      // TV (tipo string)
+    first_air_date?: string;      // TV 
     
     // Propiedades exclusivas de Movie
     original_title?: string;      // Movie
     title?: string;               // Movie
-    release_date?: Date;          // Movie (tipo Date)
+    release_date?: string;          // Movie (tipo Date)
     video?: boolean;              // Movie
     
     // Propiedades con solapamiento (TV las tiene, Movie son opcionales)
