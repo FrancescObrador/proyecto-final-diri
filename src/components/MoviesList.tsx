@@ -12,7 +12,6 @@ const MoviesList = () => {
 
     useEffect(() => {
         if (updatedList) {
-            console.log(updatedList)
             setMedia(updatedList)
             setIsLoading(false)
         }

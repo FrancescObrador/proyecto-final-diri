@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { mediaService } from '../../features/media/mediaService';
 import { MovieList } from '../../interfaces/MediaList';
 import { Media } from '../../interfaces/Media';
 import { useDispatch } from 'react-redux';
 import { addMedia } from '../../features/media/mediaSlice';
+import { useDebounceValue } from 'usehooks-ts';
+import logger from '../../utilities/Logger';
 
 export interface SearchResult {
     id: string | number;
@@ -13,27 +15,32 @@ export interface SearchResult {
 const SearchBar = () => {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Media[]>([])
-    const [, setIsLoading] = useState(false)
 
     const dispatch = useDispatch();
 
-    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value
-        setQuery(value)
+    const [debouncedQuery, setDebouncedQuery] = useDebounceValue<string>('', 300);
 
-        if (value.length > 2) {
-            setIsLoading(true)
-            try {
-                const response: MovieList = await mediaService.searchMedia(value)
-                setResults(response.results)
-            } catch (error) {
-                console.error('Error searching:', error)
+    useEffect(() => {
+        const fetch = async () => {
+            if (debouncedQuery) {
+                try {
+                    const response: MovieList = await mediaService.searchMedia(debouncedQuery)
+                    setResults(response.results)
+                } catch (error) {
+                    logger.error('Error searching:' + debouncedQuery)
+                    setResults([])
+                }
+            } else {
                 setResults([])
             }
-            setIsLoading(false)
-        } else {
-            setResults([])
         }
+        fetch();
+    }, [debouncedQuery])
+
+    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setQuery(value);
+        setDebouncedQuery(value);
     }
 
     const handleResult = async (id: number, mediaType: string) => {
@@ -65,7 +72,7 @@ const SearchBar = () => {
             {results.length > 0 && (
                 <ul className="absolute top-full mt-1 w-full bg-base-100 border rounded-lg shadow-lg max-h-60 overflow-y-auto">
                     {results.map((result) => (
-                        ((result.title || result.name) && result.release_date || result.first_air_date ) && (<li
+                        ((result.title || result.name) && result.release_date || result.first_air_date) && (<li
                             key={result.id}
                             onMouseDown={() => handleResult(result.id, result.media_type!)}
                             className="flex flex-row items-center p-2 space-x-2 hover:bg-base-200 cursor-pointer"
@@ -86,4 +93,4 @@ const SearchBar = () => {
     )
 }
 
-export default SearchBar
+export default SearchBar;

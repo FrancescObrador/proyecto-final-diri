@@ -37,7 +37,6 @@ const mediaSlice = createSlice({
             state.error = action.payload;
         },
         addMedia: (state, action: PayloadAction<Media>) => {
-            console.log(action.payload)
             state.media.push(action.payload);
         },
         removeMedia: (state, action: PayloadAction<number>) => {

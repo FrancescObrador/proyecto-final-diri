@@ -1,6 +1,7 @@
 import { Media } from '../../interfaces/Media';
 import { MovieList as MediaList } from '../../interfaces/MediaList';
 import { Providers } from '../../interfaces/Providers';
+import logger from '../../utilities/Logger';
 import { MOVIE } from './MOVIE';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -9,6 +10,7 @@ export class MediaService {
     
 
     private async fetchFromAPI(endpoint: string): Promise<any> {
+        logger.info('fetch api TMDB')
         let options = {
             method: 'GET',
             headers: {
@@ -30,8 +32,6 @@ export class MediaService {
     }
 
     async getFakeMovies(): Promise<MediaList> {
-        //await new Promise(resolve => setTimeout(resolve, 2000)); 
-         
          let mv: MediaList = {
              page: 1,
              total_pages: 10,

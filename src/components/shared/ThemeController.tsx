@@ -1,8 +1,8 @@
 
-export const ThemeController = () => {
+const ThemeController = () => {
     return (
         <label className="swap swap-rotate">
-            <input type="checkbox" className="theme-controller" value="light" />
+            <input type="checkbox" className="theme-controller" value="dark" />
             {/* sun icon */}
             <svg
                 className="swap-off h-10 w-10 fill-current"
@@ -23,3 +23,5 @@ export const ThemeController = () => {
         </label>
     )
 }
+
+export default ThemeController;

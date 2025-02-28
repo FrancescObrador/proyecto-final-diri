@@ -1,5 +1,11 @@
+import logger from "../../utilities/Logger";
 
 export const LanguageSelector = () => {
+
+    const changeLanguage = (lng: string) => {
+        logger.info("change language: " + lng);
+    };
+
     return (
         <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost m-1">
@@ -8,21 +14,20 @@ export const LanguageSelector = () => {
             </div>
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm">
                 <li>
-                    <button className="btn btn-ghost">
+                    <button className="btn btn-ghost" onClick={() => changeLanguage('ca')}>
                         <div className='badge'>cat</div> Català
                     </button>
                 </li>
                 <li>
-                    <button className="btn btn-ghost">
+                    <button className="btn btn-ghost" onClick={() => changeLanguage('en')}>
                         <div className='badge'>en</div> English
                     </button>
                 </li>
                 <li>
-                    <button className="btn btn-ghost">
+                    <button className="btn btn-ghost" onClick={() => changeLanguage('es')}>
                         <div className='badge'>es</div> Español
                     </button>
                 </li>
-
             </ul>
         </div>
     )

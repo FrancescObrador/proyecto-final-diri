@@ -14,7 +14,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
         <>
             {/* column 1 */}
             <div>
-                {!imageLoaded && <div className='skeleton w-30 h-45'></div>}
+                {!imageLoaded && <div className='skeleton w-12 md:w-22'></div>}
                 <img
                     className={`w-12 md:w-22 rounded-xl transition-all duration-300 ${seen ? 'brightness-50' : ''} ${!imageLoaded ? 'hidden' : ''}`}
                     src={`https://image.tmdb.org/t/p/w200${media.poster_path}`}
@@ -57,7 +57,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
 
             {/* column 3 */}
             <div className="flex flex-col space-y-4">
-                <label className="label label-xxs md:label-md cursor-pointer justify-end">
+                <label className="label label-xs md:label-md cursor-pointer justify-end">
                     <span className="label-text">Vista</span>
                     <input
                         type="checkbox"
@@ -67,10 +67,10 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     />
                 </label>
                 <select
-                    className="select cursor-pointe md:select-md"
+                    className={`select cursor-pointe md:select-md ${seen ? 'flex' : 'hidden'}`}
                     value={platform}
                     onChange={(e) => setPlatform(e.target.value)}
-                    style={{ visibility: seen ? 'visible' : 'hidden' }}
+                    // style={{ visibility: seen ? 'visible' : 'hidden' }}
                 >
                     <option disabled value="">Plataforma</option>
                     <option value="Netflix">Netflix</option>
