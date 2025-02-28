@@ -2,7 +2,6 @@ import { Media } from '../../interfaces/Media';
 import { MovieList as MediaList } from '../../interfaces/MediaList';
 import { Providers } from '../../interfaces/Providers';
 import logger from '../../utilities/Logger';
-import { MOVIE } from './MOVIE';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
@@ -30,17 +29,6 @@ export class MediaService {
         await new Promise(resolve => setTimeout(resolve, 2000)); 
         return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
     }
-
-    async getFakeMovies(): Promise<MediaList> {
-         let mv: MediaList = {
-             page: 1,
-             total_pages: 10,
-             total_results: 10,
-             results: MOVIE
-         };
-         
-         return mv;
-     }
 
     async getMovieDetails(movieId: number): Promise<Media> {
         let media = await this.fetchFromAPI(`/movie/${movieId}?language=es-ES`);

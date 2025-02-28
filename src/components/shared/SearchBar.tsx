@@ -12,53 +12,43 @@ export interface SearchResult {
     title: string;
 }
 
-const getMediaTitle = (media: Media): string => media.title || media.name || '';
-const getMediaDate = (media: Media): string => media.release_date || media.first_air_date || '';
-const getPosterUrl = (path: string) => `https://image.tmdb.org/t/p/w200${path}`;
-
-const formatYear = (dateString: string) => new Date(dateString).toLocaleDateString('es-ES', { year: 'numeric' });
-
-const isValidResult = (media: Media) => !!getMediaTitle(media) && !!getMediaDate(media);
-
-const getMediaDisplayText = (media: Media): string => {
-    const title = getMediaTitle(media);
-    const date = getMediaDate(media);
-    return `${title} - ${formatYear(date)}`;
-};
-
 const SearchBar = () => {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Media[]>([])
+
     const dispatch = useDispatch();
+
     const [debouncedQuery, setDebouncedQuery] = useDebounceValue<string>('', 300);
 
     useEffect(() => {
-        const fetchResults = async () => {
-            if (!debouncedQuery) return setResults([]);
-
-            try {
-                const response: MovieList = await mediaService.searchMedia(debouncedQuery);
-                setResults(response.results.filter(isValidResult));
-            } catch (error) {
-                logger.error('Error searching:' + debouncedQuery);
-                setResults([]);
+        const fetch = async () => {
+            if (debouncedQuery) {
+                try {
+                    const response: MovieList = await mediaService.searchMedia(debouncedQuery)
+                    setResults(response.results)
+                } catch (error) {
+                    logger.error('Error searching:' + debouncedQuery)
+                    setResults([])
+                }
+            } else {
+                setResults([])
             }
         }
-        fetchResults();
+        fetch();
     }, [debouncedQuery])
 
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value);
-        setDebouncedQuery(e.target.value);
+    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setQuery(value);
+        setDebouncedQuery(value);
     }
 
     const handleResult = async (id: number, mediaType: string) => {
-        const getDetails = mediaType === 'tv'
-            ? mediaService.getTVDetails
-            : mediaService.getMovieDetails;
 
-        const media = await getDetails(id);
-        dispatch(addMedia(media));
+        let media: Media = (mediaType === 'tv') ? await mediaService.getTVDetails(id)
+            : await mediaService.getMovieDetails(id);
+
+        dispatch(addMedia(media))
 
         setResults([]);
         setQuery('');
@@ -79,22 +69,23 @@ const SearchBar = () => {
                 placeholder="Search"
                 className="input input-bordered w-auto md:w-128"
             />
-
             {results.length > 0 && (
                 <ul className="absolute top-full mt-1 w-full bg-base-100 border rounded-lg shadow-lg max-h-60 overflow-y-auto">
                     {results.map((result) => (
-                        <li
+                        ((result.title || result.name) && result.release_date || result.first_air_date) && (<li
                             key={result.id}
                             onMouseDown={() => handleResult(result.id, result.media_type!)}
                             className="flex flex-row items-center p-2 space-x-2 hover:bg-base-200 cursor-pointer"
                         >
-                            <img
-                                src={getPosterUrl(result.poster_path!)}
-                                className="w-10 h-15"
-                                alt={getMediaTitle(result)}
-                            />
-                            <p>{getMediaDisplayText(result)}</p>
-                        </li>
+                            <img src={`https://image.tmdb.org/t/p/w200${result.poster_path}`} className='w-10 h-15' />
+                            <p>
+                                {result.media_type === 'tv' ? (
+                                    `${result.name} - ${new Date(result.first_air_date!).toLocaleDateString('es-ES', { year: 'numeric' })}`
+                                ) : (
+                                    `${result.title} - ${new Date(result.release_date!).toLocaleDateString('es-ES', { year: 'numeric' })}`
+                                )}
+                            </p>
+                        </li>)
                     ))}
                 </ul>
             )}
