@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Media } from '../interfaces/Media';
+import { FormattedMessage, FormattedRelativeTime } from 'react-intl';
 
 interface MovieItemProps {
     media: Media;
@@ -58,7 +59,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
             {/* column 3 */}
             <div className="flex flex-col space-y-4">
                 <label className="label label-xs md:label-md cursor-pointer justify-end">
-                    <span className="label-text">Vista</span>
+                    <span className="label-text"><FormattedMessage id='seen' /></span>
                     <input
                         type="checkbox"
                         className="toggle"
@@ -71,7 +72,7 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     value={platform}
                     onChange={(e) => setPlatform(e.target.value)}
                 >
-                    <option disabled value="">Plataforma</option>
+                    <option disabled value=""><FormattedMessage id='platform' /></option>
                     <option value="Netflix">Netflix</option>
                     <option value="Amazon Prime">Amazon Prime</option>
                     <option value="HBO Max">HBO Max</option>
@@ -80,8 +81,6 @@ export const MovieItem = ({ media: media }: MovieItemProps) => {
                     <option value="Other">Otra</option>
                 </select>
             </div>
-
-
         </>
     );
 };
