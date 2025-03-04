@@ -15,7 +15,7 @@ export const LanguageSelector = () => {
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm">
                 {
                     languages.map((lang) =>
-                        <li>
+                        <li key={lang.code}>
                             <button className="btn btn-ghost flex justify-start gap-2" onClick={() => changeLanguage(lang.code)}>
                                 <div className='badge font-mono'>{lang.code}</div>
                                 <span>{lang.name}</span>
