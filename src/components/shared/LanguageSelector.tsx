@@ -1,10 +1,10 @@
-import logger from "../../utilities/Logger";
+import { useContext } from "react";
+import { LanguageContext } from "../Providers/LanguageContext";
+import { languages } from "../../data/languages";
 
 export const LanguageSelector = () => {
 
-    const changeLanguage = (lng: string) => {
-        logger.info("change language: " + lng);
-    };
+    const { changeLanguage, locale } = useContext(LanguageContext);
 
     return (
         <div className="dropdown dropdown-end">
@@ -13,21 +13,16 @@ export const LanguageSelector = () => {
                 <svg width="12px" height="12px" className="hidden h-2 w-2 fill-current opacity-60 sm:inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048"><path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path></svg>
             </div>
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-36 p-2 shadow-sm">
-                <li>
-                    <button className="btn btn-ghost" onClick={() => changeLanguage('ca')}>
-                        <div className='badge'>cat</div> Català
-                    </button>
-                </li>
-                <li>
-                    <button className="btn btn-ghost" onClick={() => changeLanguage('en')}>
-                        <div className='badge'>en</div> English
-                    </button>
-                </li>
-                <li>
-                    <button className="btn btn-ghost" onClick={() => changeLanguage('es')}>
-                        <div className='badge'>es</div> Español
-                    </button>
-                </li>
+                {
+                    languages.map((lang) =>
+                        <li key={lang.code}>
+                            <button className="btn btn-ghost flex justify-start gap-2" onClick={() => changeLanguage(lang.code)}>
+                                <div className='badge font-mono'>{lang.code}</div>
+                                <span>{lang.name}</span>
+                            </button>
+                        </li>
+                    )
+                }
             </ul>
         </div>
     )
