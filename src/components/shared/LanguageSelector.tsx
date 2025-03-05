@@ -4,7 +4,7 @@ import { languages } from "../../data/languages";
 
 export const LanguageSelector = () => {
 
-    const { changeLanguage, locale } = useContext(LanguageContext);
+    const { changeLanguage } = useContext(LanguageContext);
 
     return (
         <div className="dropdown dropdown-end">
