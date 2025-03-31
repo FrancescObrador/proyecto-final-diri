@@ -10,7 +10,6 @@ import './App.css'
 import { Admin } from './pages/Admin'
 import AdminRoute from './routes/AdminRoute'
 import { ProtectedRoute } from './routes/ProtectedRoute'
-import Home from './pages/Home'
 
 const LazyHome = lazy(() => import('./pages/Home'));
 const LazyAbout = lazy(() => import('./pages/About'));
