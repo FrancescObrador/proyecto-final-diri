@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/AuthService';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 export const Login: React.FC = () => {
+    const intl = useIntl();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -13,7 +15,7 @@ export const Login: React.FC = () => {
         setError('');
         
         if (!validateEmail(email)) {
-            setError('Por favor ingresa un correo electrónico válido');
+            setError(intl.formatMessage({ id: 'validation.emailInvalid' }));
             return;
         }
 
@@ -23,7 +25,7 @@ export const Login: React.FC = () => {
             navigate('/home');
         } catch (error: any) {
             console.error("Error al iniciar sesión:", error);
-            setError(error.message || 'Credenciales incorrectas o error del servidor');
+            setError(error.message || intl.formatMessage({ id: 'validation.credentialsError' }));
         }
     };
 
@@ -36,17 +38,19 @@ export const Login: React.FC = () => {
             <div className="card w-full max-w-md shadow-2xl bg-base-100">
                 <div className="card-body">
                     <h2 className="card-title text-2xl font-bold mb-4 justify-center">
-                        Iniciar Sesión
+                        <FormattedMessage id="login.title" />
                     </h2>
                     
                     <form onSubmit={handleLogin} className="space-y-4">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Correo electrónico</span>
+                                <span className="label-text">
+                                    <FormattedMessage id="login.email.label" />
+                                </span>
                             </label>
                             <input
                                 type="email"
-                                placeholder="ejemplo@dominio.com"
+                                placeholder={intl.formatMessage({ id: 'login.email.placeholder' })}
                                 className="input input-bordered w-full"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -56,11 +60,13 @@ export const Login: React.FC = () => {
                         
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Contraseña</span>
+                                <span className="label-text">
+                                    <FormattedMessage id="login.password.label" />
+                                </span>
                             </label>
                             <input
                                 type="password"
-                                placeholder="••••••••"
+                                placeholder={intl.formatMessage({ id: 'login.password.placeholder' })}
                                 className="input input-bordered w-full"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +81,7 @@ export const Login: React.FC = () => {
                                         navigate('/forgot-password');
                                     }}
                                 >
-                                    ¿Olvidaste tu contraseña?
+                                    <FormattedMessage id="login.forgotPassword" />
                                 </a>
                             </label>
                         </div>
@@ -93,13 +99,15 @@ export const Login: React.FC = () => {
                         
                         <div className="form-control mt-6">
                             <button type="submit" className="btn btn-primary w-full">
-                                Ingresar
+                                <FormattedMessage id="login.submit" />
                             </button>
                         </div>
                     </form>
                     
                     <div className="text-center mt-4">
-                        <span className="text-sm">¿No tienes una cuenta? </span>
+                        <span className="text-sm">
+                            <FormattedMessage id="login.registerPrompt" />
+                        </span>
                         <a 
                             href="/register" 
                             className="link link-primary text-sm"
@@ -108,7 +116,7 @@ export const Login: React.FC = () => {
                                 navigate('/register');
                             }}
                         >
-                            Regístrate aquí
+                            <FormattedMessage id="login.registerLink" />
                         </a>
                     </div>
                 </div>

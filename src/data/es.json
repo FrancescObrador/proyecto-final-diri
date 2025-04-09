@@ -3,5 +3,16 @@
     "unseen": "No vista",
     "search": "Buscar Películas",
     "movies-empty": "Tu lista de películas está vacía. ¡Empieza a añadir alguna!",
-    "platform": "Plataforma"
+    "platform": "Plataforma",
+    "login.title": "Iniciar Sesión",
+    "login.email.label": "Correo electrónico",
+    "login.email.placeholder": "ejemplo@dominio.com",
+    "login.password.label": "Contraseña",
+    "login.password.placeholder": "••••••••",
+    "login.forgotPassword": "¿Olvidaste tu contraseña?",
+    "login.submit": "Ingresar",
+    "login.registerPrompt": "¿No tienes una cuenta? ",
+    "login.registerLink": "Regístrate aquí",
+    "validation.emailInvalid": "Por favor ingresa un correo electrónico válido",
+    "validation.credentialsError": "Credenciales incorrectas o error del servidor"
 }

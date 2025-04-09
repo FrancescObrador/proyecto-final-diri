@@ -3,5 +3,16 @@
     "unseen": "No vista",
     "search": "Cerca Pel·lícules",
     "movies-empty": "La teva llista de pel·lícules està buida. Comença a afegir-ne!",
-    "platform": "Plataforma"
+    "platform": "Plataforma",
+    "login.title": "Inici de Sessió",
+    "login.email.label": "Correu electrònic",
+    "login.email.placeholder": "exemple@domini.cat",
+    "login.password.label": "Contrasenya",
+    "login.password.placeholder": "••••••••",
+    "login.forgotPassword": "Has oblidat la contrasenya?",
+    "login.submit": "Entrar",
+    "login.registerPrompt": "No tens un compte? ",
+    "login.registerLink": "Registra't aquí",
+    "validation.emailInvalid": "Si us plau, introdueix un correu electrònic vàlid",
+    "validation.credentialsError": "Credencials incorrectes o error del servidor"
 }
