@@ -10,7 +10,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> =
     ({ children }) => {
         const { user } = useContext(AuthContext);
         if (!user) {
-            return <Navigate to="/login" replace />;
+            return <Navigate to="/auth" replace />;
         }
         return children;
     };
