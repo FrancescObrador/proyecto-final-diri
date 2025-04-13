@@ -33,7 +33,7 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
         // Crear objeto con los roles
         const rolesData = {
             email: user.email,
-            admin: user.roles.includes(Role.ADMIN)
+            admin: user.roles.includes(Role.USER)
         };
         await set(rolesRef, rolesData);
         return user.roles;
