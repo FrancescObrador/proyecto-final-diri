@@ -41,6 +41,13 @@ export interface Media {
     tagline?: string;
 }
 
+export interface MediaData {
+    id: number;
+    seen: boolean;
+    addedAt: number;
+    
+}
+
 export interface Result {
     page:          number;
     results:       TV[];

@@ -1,13 +1,15 @@
-import { getDatabase, ref, get, set } from 'firebase/database';
+import { getDatabase, ref, get, set, remove, update, onValue } from 'firebase/database';
 import { app } from './FireBase';
 import { Role, User } from './IAuthService';
 import { IUserDatabaseService } from './IUserDatabaseService';
+import { MediaData } from '../interfaces/Media';
 
 export class FirebaseDatabaseService implements IUserDatabaseService {
+    private db = getDatabase(app);
 
+    // Métodos para usuarios (sin cambios)
     async getUserRoles(uid: string): Promise<Role[]> {
-        const db = getDatabase(app);
-        const rolesRef = ref(db, `users/${uid}/roles`);
+        const rolesRef = ref(this.db, `users/${uid}/roles`);
         const snapshot = await get(rolesRef);
 
         if (snapshot.exists()) {
@@ -16,9 +18,7 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
             if (rolesData.admin === true) {
                 roles.push(Role.ADMIN);
             }
-            // Aquí se pueden agregar otros roles según se requiera.
             if (roles.length === 0) {
-                // Si no se ha asignado ningún rol, se asume el rol de usuario.
                 roles.push(Role.USER);
             }
             return roles;
@@ -27,30 +27,74 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
     }
 
     async setUserRoles(uid: string, user: User): Promise<Role[]> {
-        const db = getDatabase(app);
-        const rolesRef = ref(db, `users/${uid}/roles`);
-
-        // Crear objeto con los roles
+        const rolesRef = ref(this.db, `users/${uid}/roles`);
         const rolesData = {
             email: user.email,
-            admin: user.roles.includes(Role.USER)
+            admin: user.roles.includes(Role.ADMIN)
         };
         await set(rolesRef, rolesData);
         return user.roles;
     }
 
-    async GetAllUsers(): Promise<any[]> {
-        const db = getDatabase(app);
-        const usersRef = ref(db, 'users');
+    async GetAllUsers(): Promise<User[]> {
+        const usersRef = ref(this.db, 'users');
         const snapshot = await get(usersRef);
 
         if (snapshot.exists()) {
             const data = snapshot.val();
-            const formattedData = data ? 
-            Object.entries(data).map(([id, value]) => ({id, ...(value as any)}) )
-            : [];
-            return formattedData;
-        } 
-        return []
+            return Object.entries(data).map(([id, value]) => ({
+                uid: id,
+                email: (value as any)?.roles?.email || '',
+                roles: [(value as any)?.roles?.admin ? Role.ADMIN : Role.USER]
+            }));
+        }
+        return [];
+    }
+
+    // Métodos para MediaData corregidos
+    async AddMedia(uid: string, mediaData: MediaData): Promise<void> {
+        const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
+        await set(mediaRef, {
+            seen: mediaData.seen,
+            addedAt: mediaData.addedAt // Ya debe ser un timestamp numérico
+        });
+    }
+
+    async GetAllMedia(uid: string): Promise<MediaData[]> {
+        const mediaRef = ref(this.db, `users/${uid}/media`);
+        
+        return new Promise((resolve) => {
+            onValue(mediaRef, (snapshot) => {
+                const data = snapshot.val();
+                const mediaDataArray: MediaData[] = [];
+                
+                if (data) {
+                    for (const mediaId of Object.keys(data)) {
+                        const mediaData = data[mediaId];
+                        mediaDataArray.push({
+                            id: Number(mediaId),
+                            seen: mediaData.seen,
+                            addedAt: mediaData.addedAt // Mantenemos como número
+                        });
+                    }
+                }
+                resolve(mediaDataArray);
+            });
+        });
+    }
+
+    async RemoveMedia(uid: string, mediaId: number): Promise<void> {
+        const mediaRef = ref(this.db, `users/${uid}/media/${mediaId}`);
+        await remove(mediaRef);
+    }
+
+    async UpdateMedia(uid: string, mediaData: MediaData): Promise<void> {
+        const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
+        await update(mediaRef, {
+            seen: mediaData.seen,
+            addedAt: mediaData.addedAt
+        });
     }
 }
+
+export const firebaseDatabaseService = new FirebaseDatabaseService();
