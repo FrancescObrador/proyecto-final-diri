@@ -39,13 +39,18 @@ export interface Media {
     spoken_languages?: SpokenLanguage[];
     status?: string;
     tagline?: string;
+
+    seen: boolean;
+    addedAt: number;
+    platform: string;
 }
 
 export interface MediaData {
     id: number;
     seen: boolean;
     addedAt: number;
-    
+    platform?: string;
+    media_type: string;
 }
 
 export interface Result {

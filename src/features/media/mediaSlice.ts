@@ -3,6 +3,7 @@ import { Media, MediaData } from '../../interfaces/Media';
 import { firebaseDatabaseService } from '../../services/FirebaseDatabaseService';
 import { auth } from '../../services/FireBase';
 import { convertToMediaData } from '../../interfaces/mediaHelper';
+import { mediaService } from './mediaService';
 
 // Tipo combinado para el estado (timestamp en lugar de Date)
 type CombinedMedia = Media & MediaData;
@@ -19,42 +20,6 @@ const initialState: MediaState = {
     error: null,
 };
 
-// Thunks actualizados para usar timestamp
-export const fetchMedia = createAsyncThunk(
-    'media/fetchMedia',
-    async (_, { rejectWithValue }) => {
-        try {
-            const uid = auth.currentUser?.uid;
-            if (!uid) throw new Error('User not authenticated');
-            
-            // Obtener metadata de Firebase (timestamp como number)
-            const mediaDataList = await firebaseDatabaseService.GetAllMedia(uid);
-            
-            // Simulación de fetch a TMDB (reemplazar con tu implementación real)
-            const tmdbMediaList = await Promise.all(
-                mediaDataList.map(async (mediaData) => {
-                    // Llamada real a la API de TMDB aquí
-                    return {
-                        id: mediaData.id,
-                        title: `Movie ${mediaData.id}`,
-                        overview: 'Sample overview',
-                        // ... otras propiedades de Media
-                    } as Media;
-                })
-            );
-            
-            // Combinar datos manteniendo el timestamp numérico
-            return tmdbMediaList.map((tmdbMedia, index) => ({
-                ...tmdbMedia,
-                ...mediaDataList[index]
-            }));
-            
-        } catch (error: any) {
-            return rejectWithValue(error.message || 'Failed to fetch media');
-        }
-    }
-);
-
 export const addMedia = createAsyncThunk(
     'media/addMedia',
     async (tmdbMedia: Media, { rejectWithValue }) => {
@@ -62,11 +27,9 @@ export const addMedia = createAsyncThunk(
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
             
-            // Convertir a MediaData con timestamp numérico
             const mediaData = convertToMediaData(tmdbMedia);
             await firebaseDatabaseService.AddMedia(uid, mediaData);
             
-            // Devolver objeto combinado con timestamp numérico
             return {
                 ...tmdbMedia,
                 ...mediaData
@@ -95,21 +58,45 @@ export const removeMedia = createAsyncThunk(
 
 export const updateMedia = createAsyncThunk(
     'media/updateMedia',
-    async (payload: { mediaData: MediaData; tmdbMedia?: Media }, { rejectWithValue }) => {
+    async (mediaData: MediaData, { rejectWithValue, getState }) => {
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
             
-            await firebaseDatabaseService.UpdateMedia(uid, payload.mediaData);
+            await firebaseDatabaseService.UpdateMedia(uid, mediaData);
             
-            // Devolver datos combinados actualizados
+            const state = getState() as { media: MediaState };
+            const existingMedia = state.media.media.find(m => m.id === mediaData.id);
+            
             return {
-                ...(payload.tmdbMedia || {}), // Mantener datos de TMDB si existen
-                ...payload.mediaData
+                ...(existingMedia || {}),
+                ...mediaData
             } as CombinedMedia;
             
         } catch (error: any) {
-            return rejectWithValue(error.message || 'Failed to update media');
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchMedia = createAsyncThunk(
+    'media/fetchMedia',
+    async (_, { rejectWithValue }) => {
+        try {
+            const uid = auth.currentUser?.uid;
+            if (!uid) throw new Error('User not authenticated');
+            
+            const mediaDataList = await firebaseDatabaseService.GetAllMedia(uid);
+            
+            const tmdbMediaList = await mediaService.getMediaBatch(mediaDataList);
+            
+            return mediaDataList.map((mediaData, index) => ({
+                ...tmdbMediaList[index],
+                ...mediaData
+            }));
+            
+        } catch (error: any) {
+            return rejectWithValue(error.message);
         }
     }
 );

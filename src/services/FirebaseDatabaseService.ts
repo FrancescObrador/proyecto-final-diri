@@ -51,12 +51,21 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
         return [];
     }
 
-    // Métodos para MediaData corregidos
     async AddMedia(uid: string, mediaData: MediaData): Promise<void> {
         const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
         await set(mediaRef, {
             seen: mediaData.seen,
-            addedAt: mediaData.addedAt // Ya debe ser un timestamp numérico
+            addedAt: mediaData.addedAt,
+            platform: mediaData.platform,
+            media_type: mediaData.media_type,
+        });
+    }
+
+    async UpdateMedia(uid: string, mediaData: MediaData): Promise<void> {
+        const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
+        await update(mediaRef, {
+            seen: mediaData.seen,
+            platform: mediaData.platform 
         });
     }
 
@@ -74,7 +83,9 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
                         mediaDataArray.push({
                             id: Number(mediaId),
                             seen: mediaData.seen,
-                            addedAt: mediaData.addedAt // Mantenemos como número
+                            addedAt: mediaData.addedAt,
+                            platform: mediaData.platform || "Otros",
+                            media_type: mediaData.media_type
                         });
                     }
                 }
@@ -86,14 +97,6 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
     async RemoveMedia(uid: string, mediaId: number): Promise<void> {
         const mediaRef = ref(this.db, `users/${uid}/media/${mediaId}`);
         await remove(mediaRef);
-    }
-
-    async UpdateMedia(uid: string, mediaData: MediaData): Promise<void> {
-        const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
-        await update(mediaRef, {
-            seen: mediaData.seen,
-            addedAt: mediaData.addedAt
-        });
     }
 }
 

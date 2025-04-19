@@ -1,18 +1,15 @@
 import { Media, MediaData } from '../interfaces/Media';
 
-// Convertir a timestamp para Firebase
-export const convertToMediaData = (
-    tmdbMedia: Media,
-    seen: boolean = false
-): MediaData => {
+export const convertToMediaData = (media: Media): MediaData => {
     return {
-        id: tmdbMedia.id,
-        seen: seen,
-        addedAt: Date.now()
+        id: media.id,
+        seen: false,
+        addedAt: Date.now(),
+        platform: "Otros",
+        media_type: media.media_type!,
     };
 };
 
-// Combinar datos manteniendo el timestamp
 export const mergeMediaData = (
     tmdbMedia: Media,
     firebaseData: MediaData
@@ -23,7 +20,6 @@ export const mergeMediaData = (
     };
 };
 
-// Convertir timestamp a Date solo cuando sea necesario
 export const getAddedDate = (timestamp: number): Date => {
     return new Date(timestamp);
 };
