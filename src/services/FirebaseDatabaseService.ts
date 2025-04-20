@@ -55,6 +55,7 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
         const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
         await set(mediaRef, {
             seen: mediaData.seen,
+            seenAt: mediaData.seenAt,
             addedAt: mediaData.addedAt,
             platform: mediaData.platform,
             media_type: mediaData.media_type,
@@ -65,6 +66,7 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
         const mediaRef = ref(this.db, `users/${uid}/media/${mediaData.id}`);
         await update(mediaRef, {
             seen: mediaData.seen,
+            seenAt: mediaData.seenAt,
             platform: mediaData.platform 
         });
     }
@@ -83,6 +85,7 @@ export class FirebaseDatabaseService implements IUserDatabaseService {
                         mediaDataArray.push({
                             id: Number(mediaId),
                             seen: mediaData.seen,
+                            seenAt: mediaData.seenAt,
                             addedAt: mediaData.addedAt,
                             platform: mediaData.platform || "Otros",
                             media_type: mediaData.media_type

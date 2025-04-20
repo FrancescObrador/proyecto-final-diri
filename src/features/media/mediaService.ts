@@ -6,8 +6,15 @@ import logger from '../../utilities/Logger';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 export class MediaService {
+    private currentLanguage = 'en-EN';
+
+    setLanguage(lang: string) {
+        this.currentLanguage = lang;
+        logger.info(`Language changed to: ${lang}`);
+    }
+
     private async fetchFromAPI(endpoint: string): Promise<any> {
-        logger.info('Fetching from TMDB API');
+        logger.info(`Fetching from TMDB API [${this.currentLanguage}]`);
         const options = {
             method: 'GET',
             headers: {
@@ -31,25 +38,29 @@ export class MediaService {
     async getMediaBatch(mediaDataList: MediaData[]): Promise<Media[]> {
         try {
             const mediaPromises = mediaDataList.map(async (mediaData) => {
-                console.log(`fetching ${mediaData.id} that is ${mediaData.media_type} `)
-                if (mediaData.media_type === 'movie') {
-                    return this.getMovieDetails(mediaData.id);
-                } else {
-                    return this.getTVDetails(mediaData.id);
+                try {
+                    return mediaData.media_type === 'movie' 
+                        ? await this.getMovieDetails(mediaData.id)
+                        : await this.getTVDetails(mediaData.id);
+                } catch (error) {
+                    logger.error(`Error fetching ${mediaData.media_type} ${mediaData.id}:`+ error);
+                    return null;
                 }
             });
 
             const results = await Promise.all(mediaPromises);
             return results.filter(media => media !== null) as Media[];
         } catch (error) {
-            logger.error('Error fetching media batch:' + error);
-            throw new Error('Failed to fetch media batch');
+            logger.error('Error in media batch:' + error);
+            return [];
         }
     }
 
     async getMovieDetails(movieId: number): Promise<Media> {
         try {
-            const media = await this.fetchFromAPI(`/movie/${movieId}?language=es-ES`);
+            const media = await this.fetchFromAPI(
+                `/movie/${movieId}?language=${this.currentLanguage}&append_to_response=credits`
+            );
             return { 
                 ...media,
                 media_type: 'movie',
@@ -57,14 +68,16 @@ export class MediaService {
                 release_date: media.release_date
             };
         } catch (error) {
-            logger.error(`Error fetching movie details for ID ${movieId}:` + error);
+            logger.error(`Error fetching movie details for ID ${movieId}:`+ error);
             throw error;
         }
     }
 
     async getTVDetails(tvId: number): Promise<Media> {
         try {
-            const media = await this.fetchFromAPI(`/tv/${tvId}?language=es-ES`);
+            const media = await this.fetchFromAPI(
+                `/tv/${tvId}?language=${this.currentLanguage}&append_to_response=credits`
+            );
             return {
                 ...media,
                 media_type: 'tv',
@@ -72,34 +85,46 @@ export class MediaService {
                 first_air_date: media.first_air_date
             };
         } catch (error) {
-            logger.error(`Error fetching TV details for ID ${tvId}:` + error);
+            logger.error(`Error fetching TV details for ID ${tvId}:`+ error);
             throw error;
         }
     }
 
     async getPopularMedia(page: number = 1): Promise<MediaList> {
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
-        return await this.fetchFromAPI(`/movie/popular?language=es-ES&page=${page}`);
+        return this.fetchFromAPI(
+            `/movie/popular?language=${this.currentLanguage}&page=${page}`
+        );
     }
 
     async getMediaPlatforms(movieId: number): Promise<Providers> {
-        return await this.fetchFromAPI(`/movie/${movieId}/watch/providers`);
+        return this.fetchFromAPI(
+            `/movie/${movieId}/watch/providers?language=${this.currentLanguage}`
+        );
     }
 
     async searchMedia(query: string, page: number = 1): Promise<MediaList> {
-        return await this.fetchFromAPI(`/search/multi?query=${encodeURIComponent(query)}&language=es-ES&page=${page}`);
+        return this.fetchFromAPI(
+            `/search/multi?query=${encodeURIComponent(query)}` + 
+            `&language=${this.currentLanguage}&page=${page}`
+        );
     }
 
-    async getTopRatedMeia(page: number = 1): Promise<MediaList> {
-        return await this.fetchFromAPI(`/movie/top_rated&page=${page}`);
+    async getTopRatedMedia(page: number = 1): Promise<MediaList> {
+        return this.fetchFromAPI(
+            `/movie/top_rated?language=${this.currentLanguage}&page=${page}`
+        );
     }
 
     async getUpcomingMedia(page: number = 1): Promise<MediaList> {
-        return await this.fetchFromAPI(`/movie/upcoming&page=${page}`);
+        return this.fetchFromAPI(
+            `/movie/upcoming?language=${this.currentLanguage}&page=${page}`
+        );
     }
 
     async getNowPlayingMedia(page: number = 1): Promise<MediaList> {
-        return await this.fetchFromAPI(`/movie/now_playing&page=${page}`);
+        return this.fetchFromAPI(
+            `/movie/now_playing?language=${this.currentLanguage}&page=${page}`
+        );
     }
 }
 

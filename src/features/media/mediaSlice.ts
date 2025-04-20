@@ -5,7 +5,7 @@ import { auth } from '../../services/FireBase';
 import { convertToMediaData } from '../../interfaces/mediaHelper';
 import { mediaService } from './mediaService';
 
-// Tipo combinado para el estado (timestamp en lugar de Date)
+// Definición mejorada de CombinedMedia
 type CombinedMedia = Media & MediaData;
 
 export interface MediaState {
@@ -20,34 +20,36 @@ const initialState: MediaState = {
     error: null,
 };
 
-export const addMedia = createAsyncThunk(
+// Thunk para añadir media
+export const addMedia = createAsyncThunk<CombinedMedia, Media>(
     'media/addMedia',
-    async (tmdbMedia: Media, { rejectWithValue }) => {
+    async (tmdbMedia, { rejectWithValue }) => {
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
-            
+
             const mediaData = convertToMediaData(tmdbMedia);
             await firebaseDatabaseService.AddMedia(uid, mediaData);
-            
+
             return {
                 ...tmdbMedia,
                 ...mediaData
-            } as CombinedMedia;
-            
+            };
+
         } catch (error: any) {
             return rejectWithValue(error.message || 'Failed to add media');
         }
     }
 );
 
-export const removeMedia = createAsyncThunk(
+// Thunk para eliminar media
+export const removeMedia = createAsyncThunk<number, number>(
     'media/removeMedia',
-    async (mediaId: number, { rejectWithValue }) => {
+    async (mediaId, { rejectWithValue }) => {
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
-            
+
             await firebaseDatabaseService.RemoveMedia(uid, mediaId);
             return mediaId;
         } catch (error: any) {
@@ -58,20 +60,21 @@ export const removeMedia = createAsyncThunk(
 
 export const updateMedia = createAsyncThunk(
     'media/updateMedia',
-    async (mediaData: MediaData, { rejectWithValue, getState }) => {
+    async (mediaData: MediaData, { rejectWithValue }) => {
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
             
             await firebaseDatabaseService.UpdateMedia(uid, mediaData);
             
-            const state = getState() as { media: MediaState };
-            const existingMedia = state.media.media.find(m => m.id === mediaData.id);
-            
             return {
-                ...(existingMedia || {}),
-                ...mediaData
-            } as CombinedMedia;
+                id: mediaData.id,
+                updates: {
+                    seen: mediaData.seen,
+                    seenAt: mediaData.seenAt || null,
+                    platform: mediaData.platform || 'Otros'
+                }
+            };
             
         } catch (error: any) {
             return rejectWithValue(error.message);
@@ -85,16 +88,15 @@ export const fetchMedia = createAsyncThunk(
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
-            
+
             const mediaDataList = await firebaseDatabaseService.GetAllMedia(uid);
-            
             const tmdbMediaList = await mediaService.getMediaBatch(mediaDataList);
-            
+
             return mediaDataList.map((mediaData, index) => ({
                 ...tmdbMediaList[index],
                 ...mediaData
             }));
-            
+
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -104,7 +106,13 @@ export const fetchMedia = createAsyncThunk(
 const mediaSlice = createSlice({
     name: 'media',
     initialState,
-    reducers: {},
+    reducers: {
+        resetMedia: (state) => {
+            state.media = [];
+            state.loading = false;
+            state.error = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchMedia.pending, (state) => {
@@ -119,6 +127,8 @@ const mediaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
+
+            // Add Media
             .addCase(addMedia.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -136,7 +146,7 @@ const mediaSlice = createSlice({
                 state.error = null;
             })
             .addCase(removeMedia.fulfilled, (state, action: PayloadAction<number>) => {
-                state.media = state.media.filter((media: { id: number; }) => media.id !== action.payload);
+                state.media = state.media.filter(media => media.id !== action.payload);
                 state.loading = false;
             })
             .addCase(removeMedia.rejected, (state, action) => {
@@ -147,10 +157,13 @@ const mediaSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateMedia.fulfilled, (state, action: PayloadAction<CombinedMedia>) => {
-                const index = state.media.findIndex((media: { id: any; }) => media.id === action.payload.id);
+            .addCase(updateMedia.fulfilled, (state, action) => {
+                const index = state.media.findIndex(m => m.id === action.payload.id);
                 if (index !== -1) {
-                    state.media[index] = action.payload;
+                    state.media[index] = {
+                        ...state.media[index],
+                        ...action.payload.updates
+                    };
                 }
                 state.loading = false;
             })
@@ -161,4 +174,5 @@ const mediaSlice = createSlice({
     }
 });
 
+export const { resetMedia } = mediaSlice.actions;
 export default mediaSlice.reducer;

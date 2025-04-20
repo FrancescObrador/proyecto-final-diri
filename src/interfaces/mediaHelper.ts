@@ -4,6 +4,7 @@ export const convertToMediaData = (media: Media): MediaData => {
     return {
         id: media.id,
         seen: false,
+        seenAt: null,
         addedAt: Date.now(),
         platform: "Otros",
         media_type: media.media_type!,
