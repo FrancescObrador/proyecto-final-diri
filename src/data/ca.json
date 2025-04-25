@@ -23,5 +23,6 @@
   "validation.passwordLength": "La contrasenya ha de tenir com a mínim 6 caràcters",
   "validation.credentialsError": "Credencials incorrectes",
   "alert.error": "Error",
-  "alert.success": "Èxit"
+  "alert.success": "Èxit",
+  "delete": "Eliminar"
 }

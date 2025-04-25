@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { addMedia } from '../../features/media/mediaSlice';
 import { useDebounceValue } from 'usehooks-ts';
 import logger from '../../utilities/Logger';
+import { AppDispatch } from '../../store/store';
 
 export interface SearchResult {
     id: string | number;
@@ -15,8 +16,7 @@ export interface SearchResult {
 const SearchBar = () => {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState<Media[]>([])
-
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>(); 
 
     const [debouncedQuery, setDebouncedQuery] = useDebounceValue<string>('', 300);
 

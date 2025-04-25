@@ -11,21 +11,21 @@ export interface Media {
     vote_count: number;
 
     // Propiedades exclusivas de TV
-    original_name?: string;        // TV
-    name?: string;                 // TV
-    first_air_date?: string;      // TV 
-    
+    original_name?: string;
+    name?: string;
+    first_air_date?: string;
+
     // Propiedades exclusivas de Movie
-    original_title?: string;      // Movie
-    title?: string;               // Movie
-    release_date?: string;          // Movie (tipo Date)
-    video?: boolean;              // Movie
-    
+    original_title?: string;
+    title?: string;
+    release_date?: string;
+    video?: boolean;
+
     // Propiedades con solapamiento (TV las tiene, Movie son opcionales)
-    genre_ids?: number[];         // Presente en TV y Movie (opcional en Movie)
-    origin_country?: string[];    // Obligatorio en TV, opcional en Movie
-    media_type?: string;
-    
+    genre_ids?: number[];
+    origin_country?: string[];
+    media_type: 'movie' | 'tv';
+
     // Propiedades exclusivas de Movie (detalles)
     belongs_to_collection?: BelongsToCollection;
     budget?: number;
@@ -39,59 +39,73 @@ export interface Media {
     spoken_languages?: SpokenLanguage[];
     status?: string;
     tagline?: string;
+
+    seen: boolean;
+    addedAt: number;
+    platform: string;
+    seenAt?: number | null;
+}
+
+export interface MediaData {
+    id: number;
+    seen: boolean;
+    seenAt: number | null;
+    addedAt: number;
+    platform: string;
+    media_type: 'movie' | 'tv';
 }
 
 export interface Result {
-    page:          number;
-    results:       TV[];
-    total_pages:   number;
+    page: number;
+    results: TV[];
+    total_pages: number;
     total_results: number;
 }
 
 export interface TV {
-    adult:             boolean;
-    backdrop_path:     null | string;
-    genre_ids:         number[];
-    id:                number;
-    origin_country:    string[];
+    adult: boolean;
+    backdrop_path: null | string;
+    genre_ids: number[];
+    id: number;
+    origin_country: string[];
     original_language: string;
-    original_name:     string;
-    overview:          string;
-    popularity:        number;
-    poster_path:       null | string;
-    first_air_date:    string;
-    name:              string;
-    vote_average:      number;
-    vote_count:        number;
+    original_name: string;
+    overview: string;
+    popularity: number;
+    poster_path: null | string;
+    first_air_date: string;
+    name: string;
+    vote_average: number;
+    vote_count: number;
 }
 
 
 export interface BelongsToCollection {
-    id:            number;
-    name:          string;
-    poster_path:   null;
+    id: number;
+    name: string;
+    poster_path: null;
     backdrop_path: null;
 }
 
 export interface Genre {
-    id:   number;
+    id: number;
     name: string;
 }
 
 export interface ProductionCompany {
-    id:             number;
-    logo_path:      null | string;
-    name:           string;
+    id: number;
+    logo_path: null | string;
+    name: string;
     origin_country: string;
 }
 
 export interface ProductionCountry {
     iso_3166_1: string;
-    name:       string;
+    name: string;
 }
 
 export interface SpokenLanguage {
     english_name: string;
-    iso_639_1:    string;
-    name:         string;
+    iso_639_1: string;
+    name: string;
 }

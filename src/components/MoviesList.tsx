@@ -1,42 +1,57 @@
-import { useEffect, useState } from 'react';
-import { Media } from '../interfaces/Media';
-import { MovieItem } from './MovieItem';
-import CenteredLoader from './shared/CenteredLoader';
-import { useSelector } from 'react-redux';
+import { memo, useContext, useEffect } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { fetchMedia } from '../features/media/mediaSlice';
+import { AppDispatch } from '../store/store';
+import MovieItem from './MovieItem';
+import CenteredLoader from './shared/CenteredLoader';
+import { LanguageContext } from './Providers/LanguageContext';
 
-const MoviesList = () => {
-    const [media, setMedia] = useState<Media[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    const updatedList = useSelector((state: any) => state.media.media);
+const MoviesList = memo(() => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { media, loading, error } = useSelector(
+        (state: any) => ({
+            media: state.media.media,
+            loading: state.media.loading,
+            error: state.media.error
+        }),
+        shallowEqual
+    );
+    const { locale } = useContext(LanguageContext);
 
     useEffect(() => {
-        if (updatedList) {
-            setMedia(updatedList)
-            setIsLoading(false)
-        }
-    }, [updatedList]);
+        dispatch(fetchMedia());
+    }, [dispatch, locale]);
+
+    if (loading) {
+        return <CenteredLoader messages={['Writing the scripts...', 'Filming the movies...']} />;
+    }
+
+    if (error) {
+        return (
+            <div className="text-center p-4 text-error">
+                <FormattedMessage id="error-fetching-media" />
+            </div>
+        );
+    }
 
     return (
         <>
-            {isLoading ? (
-                <CenteredLoader messages={['Writing the scripts...', 'Filming the movies...']}></CenteredLoader>
-            ) : media.length === 0 ? (
+            {media.length === 0 ? (
                 <div className="text-center p-4">
                     <p className="text-xl"><FormattedMessage id='movies-empty' /></p>
                 </div>
             ) : (
                 <ul className="list bg-base-100 rounded-box shadow-xl m-4">
-                    {media.map((media) => (
-                        <li key={media.id} className='list-row'>
-                            <MovieItem media={media} />
+                    {media.map((mediaItem: any) => (
+                        <li key={`${mediaItem.id}-${mediaItem.media_type}`} className='list-row'>
+                            <MovieItem media={mediaItem} />
                         </li>
                     ))}
                 </ul>
             )}
         </>
     );
-};
+});
 
 export default MoviesList;
