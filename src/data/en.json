@@ -23,5 +23,6 @@
   "validation.passwordLength": "Password must be at least 6 characters",
   "validation.credentialsError": "Invalid credentials",
   "alert.error": "Error",
-  "alert.success": "Success"
+  "alert.success": "Success",
+  "delete": "Delete"
 }

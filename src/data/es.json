@@ -23,5 +23,6 @@
   "validation.passwordLength": "La contraseña debe tener al menos 6 caracteres",
   "validation.credentialsError": "Credenciales incorrectas",
   "alert.error": "Error",
-  "alert.success": "Éxito"
+  "alert.success": "Éxito",
+  "delete": "Eliminar"
 }

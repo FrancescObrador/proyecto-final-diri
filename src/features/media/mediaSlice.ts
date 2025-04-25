@@ -49,7 +49,6 @@ export const removeMedia = createAsyncThunk<number, number>(
         try {
             const uid = auth.currentUser?.uid;
             if (!uid) throw new Error('User not authenticated');
-
             await firebaseDatabaseService.RemoveMedia(uid, mediaId);
             return mediaId;
         } catch (error: any) {
@@ -153,10 +152,6 @@ const mediaSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            .addCase(updateMedia.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
             .addCase(updateMedia.fulfilled, (state, action) => {
                 const index = state.media.findIndex(m => m.id === action.payload.id);
                 if (index !== -1) {
@@ -167,10 +162,6 @@ const mediaSlice = createSlice({
                 }
                 state.loading = false;
             })
-            .addCase(updateMedia.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload as string;
-            });
     }
 });
 
