@@ -24,5 +24,10 @@
   "validation.credentialsError": "Credenciales incorrectas",
   "alert.error": "Error",
   "alert.success": "Éxito",
-  "delete": "Eliminar"
+  "delete": "Eliminar",
+   "admin.congrats": "¡Enhorabuena, Administrador!",
+  "admin.accessSuccess": "Has accedido correctamente al panel de administración.",
+  "admin.userList": "Lista de usuarios",
+  "admin.userLabel": "Usuario {index}",
+  "admin.userEmail": "Email: {email}"
 }
