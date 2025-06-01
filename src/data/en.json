@@ -24,5 +24,10 @@
   "validation.credentialsError": "Invalid credentials",
   "alert.error": "Error",
   "alert.success": "Success",
-  "delete": "Delete"
+  "delete": "Delete",
+   "admin.congrats": "Congratulations, Admin!",
+  "admin.accessSuccess": "You have successfully accessed the admin panel.",
+  "admin.userList": "User list",
+  "admin.userLabel": "User {index}",
+  "admin.userEmail": "Email: {email}"
 }

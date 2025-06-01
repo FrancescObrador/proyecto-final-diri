@@ -7,6 +7,7 @@ import { Role } from '../services/IAuthService';
 interface AuthContextProps {
     user: any | null;
     roles: Role[] | null;
+    loading?: boolean;
 }
 export const AuthContext =
     createContext<AuthContextProps>({
@@ -21,6 +22,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<any | null>(null);
     const [roles, setRoles] = useState<Role[] | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         const unsubscribe = authService.onAuthStateChanged(async (currentUser) => {
             setUser(currentUser);
@@ -28,9 +30,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 try {
                     const userRoles = await authService.getUserRoles(currentUser);
                     setRoles(userRoles);
+                    setLoading(false);
                 } catch (error) {
                     console.error('Error al obtener los roles:', error);
                     setRoles(null);
+                    setLoading(false);
                 }
             }
             else {
@@ -40,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return unsubscribe;
     }, []);
     return (
-        <AuthContext.Provider value={{ user, roles }}>
+        <AuthContext.Provider value={{ user, roles, loading }}>
             {children}
         </AuthContext.Provider>
     );

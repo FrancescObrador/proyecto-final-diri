@@ -24,5 +24,10 @@
   "validation.credentialsError": "Credencials incorrectes",
   "alert.error": "Error",
   "alert.success": "Èxit",
-  "delete": "Eliminar"
+  "delete": "Eliminar",
+   "admin.congrats": "Enhorabona, Administrador!",
+  "admin.accessSuccess": "Has accedit correctament al panell d'administració.",
+  "admin.userList": "Llista d'usuaris",
+  "admin.userLabel": "Usuari {index}",
+  "admin.userEmail": "Correu electrònic: {email}"
 }
