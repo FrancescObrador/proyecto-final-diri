@@ -3,7 +3,7 @@ import { FirebaseDatabaseService } from '../services/FirebaseDatabaseService';
 
 const firebaseDBService = new FirebaseDatabaseService();
 
-export const Admin = () => {
+const Admin = () => {
     const [users, setUsers] = useState<any[]>([]);
 
     useEffect(() => {
@@ -21,12 +21,14 @@ export const Admin = () => {
             <ul>
                 {users.map((user, index) => (
                     <li key={index}>
-
-                        {JSON.stringify(user)}
-
+                        <pre>User {index + 1}</pre>
+                        <pre>Email: {user.email}</pre>
+                        <pre>Roles: {user.roles.join(', ')}</pre>
                     </li>
                 ))}
             </ul>
         </>
     );
 };
+
+export default Admin;

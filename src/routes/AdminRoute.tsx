@@ -1,18 +1,24 @@
-import React, { useContext } from 'react';
+import React, { JSX, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Role } from '../services/IAuthService';
+import CenteredLoader from '../components/shared/CenteredLoader';
 
 interface AdminRouteProps {
-    children: React.ReactNode;
+  children: JSX.Element;
 }
 
 const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-    const { user, roles } = useContext(AuthContext);
-    // Permite el acceso solo si el usuario está autenticado y tiene el rol ADMIN
-    if (!user || !roles || !roles.includes(Role.ADMIN)) {
-        return <Navigate to="/" replace />;
-    }
-    return <>{children}</>;
+  const { user, roles, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return (
+      <CenteredLoader messages={['Loading user data...', 'Please wait...']} />
+    );
+  }
+
+  const isAdmin = user && roles?.includes(Role.ADMIN);
+  return isAdmin ? children : <Navigate to="/" replace />;
 };
+
 export default AdminRoute;
